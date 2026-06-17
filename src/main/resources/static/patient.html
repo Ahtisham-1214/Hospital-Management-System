@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Hospital Management System</title>
+    <title>Patient</title>
 </head>
 <body>
-<h1>Welcome to Hospital Management System</h1>
-</body>
+
 <form id="patientForm">
     <label for="name">Name:</label>
     <input type="text" id="name" name="name" required>
@@ -83,7 +82,7 @@
         };
 
         // Send data as application/json
-        fetch('/patient/add', {
+        fetch('/patients', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -97,7 +96,12 @@
     });
 
     function viewPatient() {
-        fetch('/patient/view')
+        fetch('/patients', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -132,4 +136,5 @@
             });
     }
 </script>
+</body>
 </html>

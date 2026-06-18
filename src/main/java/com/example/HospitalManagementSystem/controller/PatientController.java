@@ -4,14 +4,12 @@ import com.example.HospitalManagementSystem.dto.PatientAppointmentResponseDTO;
 import com.example.HospitalManagementSystem.dto.PatientResponseDTO;
 import com.example.HospitalManagementSystem.entity.Appointment;
 import com.example.HospitalManagementSystem.entity.Patient;
-import com.example.HospitalManagementSystem.repository.AppointmentRepository;
 import com.example.HospitalManagementSystem.service.AppointmentService;
 import com.example.HospitalManagementSystem.service.PatientService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,20 +25,21 @@ public class PatientController {
 
 
     @GetMapping
-    public List<PatientResponseDTO> getAllPatient(){
-        List<Patient> patientList = patientService.getAllPatient();
+    public List<PatientResponseDTO> getAllPatients(){
+        List<Patient> patientList = patientService.getAllPatients();
         return patientList.stream().map(patient -> modelMapper.map(patient, PatientResponseDTO.class)).toList();
     }
 
     @PostMapping
-    public void addPatient(@RequestBody Patient patient){
-    patientService.addPatient(patient);
+    public ResponseEntity<PatientResponseDTO> addPatient(@RequestBody Patient patient){
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(patientService.addPatient(patient), PatientResponseDTO.class));
 
     }
 
     @DeleteMapping("/{patientId}")
-    public void deletePatient(@PathVariable Long patientId){
+    public ResponseEntity<Void> deletePatient(@PathVariable Long patientId){
         patientService.deleteById(patientId);
+        return ResponseEntity.noContent().build();
     }
 
 
